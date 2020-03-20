@@ -42,6 +42,9 @@ dependencies {
     // Moshi
     implementation 'com.squareup.moshi:moshi:1.8.0'
 
+    // Jsoup
+    implementation 'org.jsoup:jsoup:1.11.2'
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
