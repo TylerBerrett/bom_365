@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val local = Locale.getDefault()
-        val format = SimpleDateFormat("EEE, MMM d, ''yy", local)
+        val format = SimpleDateFormat("EEE, MMM d", local)
         val date = Calendar.getInstance().time
         tv_date_main.text = format.format(date)
 
