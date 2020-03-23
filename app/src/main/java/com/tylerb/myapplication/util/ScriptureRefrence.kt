@@ -9,7 +9,39 @@ class ScriptureRefrence(private val month: Int, private val day: Int) {
         return months[month]?.get(day)
     }
 
-    private val january = mapOf(1 to listOf(""))
+    private val january = mapOf(
+        1 to listOf("1-ne/1", "1", "15"),
+        2 to listOf("1-ne/1", "16", "20", "1-ne/2", "1", "15"),
+        3 to listOf("1-ne/2", "16", "24", "1-ne/3", "1", "8"),
+        4 to listOf("1-ne/3", "9", "31"),
+        5 to listOf("1-ne/4", "1", "18"),
+        6 to listOf("1-ne/4", "19", "38", "1-ne/5", "1", "6"),
+        7 to listOf("1-ne/5", "7", "22", "1-ne/6", "1", "6"),
+        8 to listOf("1-ne/7", "1", "15"),
+        9 to listOf("1-ne/7", "16", "22", "1-ne/8", "1", "15"),
+        10 to listOf("1-ne/8", "16", "38"),
+        11 to listOf("1-ne/9", "1", "6", "1-ne/10", "1", "10"),
+        12 to listOf("1-ne/10", "10", "22", "1-ne/11", "1", "11"),
+        13 to listOf("1-ne/11", "12", "30"),
+        14 to listOf("1-ne/11", "31", "36", "1-ne/12", "1", "10"),
+        15 to listOf("1-ne/12", "11", "23", "1-ne/13", "1", "9"),
+        16 to listOf("1-ne/13", "10", "27"),
+        17 to listOf("1-ne/13", "28", "39"),
+        18 to listOf("1-ne/13", "40", "42", "1-ne/14", "1", "8"),
+        19 to listOf("1-ne/14", "9", "30"),
+        20 to listOf("1-ne/15", "1", "18"),
+        21 to listOf("1-ne/15", "19", "36"),
+        22 to listOf("1-ne/16", "1", "16"),
+        23 to listOf("1-ne/16", "17", "30"),
+        24 to listOf("1-ne/17", "1", "16"),
+        25 to listOf("1-ne/17", "17", "30"),
+        26 to listOf("1-ne/17", "31", "47"),
+        27 to listOf("1-ne/17", "48", "55", "1-ne/18", "1", "4"),
+        28 to listOf("1-ne/18", "5", "20"),
+        29 to listOf("1-ne/18", "21", "25", "1-ne/19", "1", "6"),
+        30 to listOf("1-ne/19", "7", "24"),
+        31 to listOf("1-ne/20", "1", "22")
+    )
     private val february = mapOf(1 to listOf(""))
     private val march = mapOf(
         1 to listOf("2-ne/23", "1", "22"),
