@@ -1,19 +1,15 @@
 package com.tylerb.myapplication
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Html
+import android.view.View
+import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tylerb.myapplication.adapter.ScriptureRecycler
-import com.tylerb.myapplication.model.ScriptureResponse
-import com.tylerb.myapplication.network.CallBuilder
-import com.tylerb.myapplication.util.ScriptureRefrence
+import com.tylerb.myapplication.util.ScriptureReference
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jsoup.Jsoup
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -23,66 +19,56 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val local = Locale.getDefault()
-        val format = SimpleDateFormat("MMMM d", local)
-        val date = Calendar.getInstance().time
-        tv_date_main.text = format.format(date)
+        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+
 
         val month = Calendar.getInstance().get(Calendar.MONTH)
         val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
 
-        var ref = ""
-        var start = 0
-        var end = 0
-        ScriptureRefrence(month, day).getScritureRefrence()?.let {
-            ref = it[0]
-            start = it[1].toInt()
-            end = it[2].toInt()
 
-        }
+        val script = ScriptureReference(month, day).getScriptureReference()
+
+        val ref = script[0]
+        val start = script[1].toInt()
+        val end = script[2].toInt()
+
+
+        val verseList = ArrayList<String>()
 
         rv_main.layoutManager = LinearLayoutManager(this)
+        rv_main.adapter = ScriptureRecycler(verseList)
 
-
-        CallBuilder.getScripture().getBook("eng", "/scriptures/bofm/$ref").enqueue(
-            object: Callback<ScriptureResponse>{
-                override fun onFailure(call: Call<ScriptureResponse>, t: Throwable) {
-                    println(t)
+        viewModel.getScripture("eng", "/scriptures/bofm/$ref")
+            .observe(this, Observer {
+                val title = "${it.meta.title}: $start-$end"
+                tv_ref_main.text = title
+                tv_date_main.text = viewModel.displayDate()
+                pb_main.visibility = View.GONE
+                viewModel.getParagraphs(it.content.body, start, end).forEach {
+                    verseList.add(it)
+                }
+                rv_main.adapter?.notifyDataSetChanged()
+                if (script.size > 3) {
+                    val ref2 = script[3]
+                    val start2 = script[4].toInt()
+                    val end2 = script[5].toInt()
+                    viewModel.getScripture("eng", "/scriptures/bofm/$ref2")
+                        .observe(this, Observer {
+                            val refTitle = "${it.meta.title}: $start2-$end2"
+                            val title2 = "${tv_ref_main.text} - $refTitle"
+                            tv_ref_main.text = title2
+                            verseList.add(refTitle)
+                            viewModel.getParagraphs(it.content.body, start2, end2).forEach {
+                                verseList.add(it)
+                            }
+                            rv_main.adapter?.notifyDataSetChanged()
+                        })
                 }
 
-                override fun onResponse(call: Call<ScriptureResponse>, response: Response<ScriptureResponse>) {
-                    if (response.isSuccessful) {
-                        response.body()?.let {
-                            val title = "${it.meta.title}: $start-$end"
-                            tv_ref_main.text = title
-
-                            val htmlTest = it.content.body
-
-                            rv_main.adapter = ScriptureRecycler(getParagraphs(htmlTest, start, end))
-
-
-                        }
-                    } else println(response)
-                }
-
-            }
-        )
-
-    }
-    fun getParagraphs(htmlString: String, startVerse: Int, endVerse: Int): ArrayList<String> {
-        val doc = Jsoup.parse(htmlString)
-        val paragraphs = ArrayList<String>()
-
-        for (i in startVerse..endVerse){
-            val paragraph = doc.body().getElementById("p$i")
-            val markers = paragraph.getElementsByClass("marker")
-            markers.remove()
-            paragraphs.add(paragraph.text())
-        }
-
-        return paragraphs
-
+            })
 
 
     }
+
 }
