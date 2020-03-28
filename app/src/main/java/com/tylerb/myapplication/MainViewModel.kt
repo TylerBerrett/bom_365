@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainViewModel: ViewModel() {
-    val repo: Repo = Repo()
+    private val repo: Repo = Repo()
 
     fun getScripture(lang: String, scripture: String): LiveData<ScriptureResponse> {
         return liveData(Dispatchers.IO) {
