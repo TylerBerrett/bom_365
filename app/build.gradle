@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.squareup.moshi:moshi:1.8.0'
 
     // Jsoup
-    implementation 'org.jsoup:jsoup:1.11.2'
+    implementation 'org.jsoup:jsoup:1.13.1'
 
     // Recyclerview
     implementation "androidx.recyclerview:recyclerview:1.1.0"

@@ -12,9 +12,9 @@ import java.util.*
 class MainViewModel: ViewModel() {
     private val repo: Repo = Repo()
 
-    fun getScripture(lang: String, scripture: String): LiveData<ScriptureResponse> {
+    fun getScripture(month: String, day: String): LiveData<ScriptureResponse> {
         return liveData(Dispatchers.IO) {
-            emit(repo.getScripture(lang, scripture))
+            emit(repo.getScripture(month, day))
         }
     }
 
@@ -23,20 +23,6 @@ class MainViewModel: ViewModel() {
         val format = SimpleDateFormat("MMMM d", local)
         val date = Calendar.getInstance().time
         return format.format(date)
-    }
-
-    fun getParagraphs(htmlString: String, startVerse: Int, endVerse: Int): ArrayList<String> {
-        val doc = Jsoup.parse(htmlString)
-        val paragraphs = ArrayList<String>()
-
-        for (i in startVerse..endVerse){
-            val paragraph = doc.body().getElementById("p$i")
-            val markers = paragraph.getElementsByClass("marker")
-            markers.remove()
-            paragraphs.add(paragraph.text())
-        }
-
-        return paragraphs
     }
 
 }
