@@ -1,10 +1,10 @@
 package com.tylerb.myapplication
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
+import android.net.Uri
+import androidx.lifecycle.*
 import com.tylerb.myapplication.model.ScriptureResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import java.text.SimpleDateFormat
 import java.util.*
@@ -12,31 +12,44 @@ import java.util.*
 class MainViewModel: ViewModel() {
     private val repo: Repo = Repo()
 
-    fun getScripture(lang: String, scripture: String): LiveData<ScriptureResponse> {
-        return liveData(Dispatchers.IO) {
-            emit(repo.getScripture(lang, scripture))
+    private val scriptureData = MutableLiveData<ScriptureResponse>()
+    val responseData: LiveData<ScriptureResponse> = scriptureData
+
+    fun getScripture(month: String, day: String): String{
+        viewModelScope.launch {
+            scriptureData.value = repo.getScripture(month, day)
         }
+        return displayDate(month.toInt() - 1, day.toInt())
     }
 
-    fun displayDate(): String {
+    private fun displayDate(month: Int, day: Int): String {
         val local = Locale.getDefault()
         val format = SimpleDateFormat("MMMM d", local)
-        val date = Calendar.getInstance().time
-        return format.format(date)
+        val date = Calendar.getInstance()
+        date.set(Calendar.MONTH, month)
+        date.set(Calendar.DAY_OF_MONTH, day)
+        return format.format(date.time)
     }
 
-    fun getParagraphs(htmlString: String, startVerse: Int, endVerse: Int): ArrayList<String> {
-        val doc = Jsoup.parse(htmlString)
-        val paragraphs = ArrayList<String>()
+    fun gospelLibraryUrl(mainTitle: String): Uri{
+        val split = mainTitle.split(":")[0].split(" ")
+        val chapter = split.last()
 
-        for (i in startVerse..endVerse){
-            val paragraph = doc.body().getElementById("p$i")
-            val markers = paragraph.getElementsByClass("marker")
-            markers.remove()
-            paragraphs.add(paragraph.text())
+        val book = split.first()
+        var finalBook = book.toLowerCase(Locale.getDefault())
+
+        if (book.contains("Nephi")){
+            val bookNum = book[0]
+            finalBook = "$bookNum-ne"
         }
-
-        return paragraphs
+        when (book){
+            "Words" -> finalBook = "w-of-m"
+            "Helaman" -> finalBook = "hel"
+            "Mormon" -> finalBook = "morm"
+            "Moroni" -> finalBook = "moro"
+        }
+        val url = "https://www.churchofjesuschrist.org/study/scriptures/bofm/$finalBook/$chapter"
+        return Uri.parse(url)
     }
 
 }

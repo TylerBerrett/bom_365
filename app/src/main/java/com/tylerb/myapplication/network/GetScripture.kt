@@ -2,14 +2,15 @@ package com.tylerb.myapplication.network
 
 import com.tylerb.myapplication.model.ScriptureResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GetScripture {
 
-    @GET("content")
+    @GET("scripture/{month}/{day}")
     suspend fun getBook(
-        @Query("lang") lang: String,
-        @Query("uri") scripture: String
+        @Path("month") month: String,
+        @Path("day") day: String
     ) : ScriptureResponse
 
 }

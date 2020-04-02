@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object CallBuilder {
-    private val base = "https://www.churchofjesuschrist.org/study/api/v3/language-pages/type/"
+    private val base = "https://bom-365.herokuapp.com/"
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(base)

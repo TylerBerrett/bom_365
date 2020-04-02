@@ -4,37 +4,44 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     app:layoutDescription="@xml/scroll_motion"
     tools:context=".MainActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:elevation="4dp"
+        android:theme="@style/Toolbar.Theme"
+        android:background="?attr/colorPrimary"
+        app:titleTextColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
+
     <LinearLayout
         android:id="@+id/title"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_ref_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:textAlignment="center"
-        android:textSize="24sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="24sp" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_date_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="20sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@id/tv_ref_main" />
+        android:textSize="20sp" />
     </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_main"
@@ -42,9 +49,9 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/scripture_view"
         app:layout_constraintTop_toBottomOf="@id/title" />
 
     <LinearLayout
