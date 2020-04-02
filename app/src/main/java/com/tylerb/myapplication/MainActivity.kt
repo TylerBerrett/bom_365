@@ -1,6 +1,8 @@
 package com.tylerb.myapplication
 
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -76,6 +78,8 @@ class MainActivity : AppCompatActivity() {
 
             }
             R.id.library -> {
+                val url = viewModel.gospelLibraryUrl(tv_ref_main.text.toString())
+                startActivity(Intent(Intent.ACTION_VIEW, url))
                 true
             }
             else -> return super.onOptionsItemSelected(item)
