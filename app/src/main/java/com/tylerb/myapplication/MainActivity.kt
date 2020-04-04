@@ -11,45 +11,32 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.tylerb.myapplication.adapter.ScriptureRecycler
+import com.tylerb.myapplication.adapter.ViewPagerFragmentState
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var viewModel: MainViewModel
-    lateinit var displayDate: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.fragment_main)
         setSupportActionBar(toolbar)
 
+        val pagerAdapter = ViewPagerFragmentState(this)
+        view_pager.adapter = pagerAdapter
+
+        val dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+        // have to minus one because DAY_OF_YEAR starts dec 31
+        view_pager.setCurrentItem(dayOfYear - 1, false)
+
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
-        val verseList = ArrayList<String>()
-
-        val month = Calendar.getInstance().get(Calendar.MONTH) + 1
-        val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-
-        rv_main.layoutManager = LinearLayoutManager(this)
-        rv_main.adapter = ScriptureRecycler(verseList)
-
-        displayDate = viewModel.getScripture("$month", "$day")
-
-        viewModel.responseData.observe(this, Observer { response ->
-            verseList.clear()
-            pb_main.visibility = View.GONE
-            tv_ref_main.text = response.main_title
-            tv_date_main.text = displayDate
-            response.scriptures.forEach {
-                verseList.add(it)
-            }
-            rv_main.adapter?.notifyDataSetChanged()
-
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -66,13 +53,12 @@ class MainActivity : AppCompatActivity() {
                     .build()
                 picker.show(supportFragmentManager, "tag")
                 picker.addOnPositiveButtonClickListener {
-                    pb_main.visibility = View.VISIBLE
                     val zone = TimeZone.getTimeZone("UTC")
                     val calendar = Calendar.getInstance(zone)
                     calendar.time = Date(it)
-                    val month = calendar.get(Calendar.MONTH) + 1
-                    val day = calendar.get(Calendar.DAY_OF_MONTH)
-                    displayDate = viewModel.getScripture("$month", "$day")
+                    val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
+                    // have to minus one because DAY_OF_YEAR starts dec 31
+                    view_pager.setCurrentItem(dayOfYear - 1, false)
                 }
                 true
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.motion.widget.MotionLayout
+    android:id="@+id/motion_base"
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,36 +11,27 @@
     app:layoutDescription="@xml/scroll_motion"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:elevation="4dp"
-        android:theme="@style/Toolbar.Theme"
-        android:background="?attr/colorPrimary"
-        app:titleTextColor="@android:color/white"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
-
     <LinearLayout
         android:id="@+id/title"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_ref_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textAlignment="center"
-        android:textSize="24sp" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_ref_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAlignment="center"
+            android:textSize="24sp" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_date_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="20sp" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_date_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="20sp" />
     </LinearLayout>
 
 
@@ -49,8 +41,8 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:paddingBottom="16dp"
         android:clipToPadding="false"
+        android:paddingBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -58,17 +50,16 @@
         android:id="@+id/ll_pb_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="visible">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ProgressBar
-        android:id="@+id/pb_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <ProgressBar
+            android:id="@+id/pb_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

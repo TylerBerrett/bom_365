@@ -15,19 +15,24 @@ class MainViewModel: ViewModel() {
     private val scriptureData = MutableLiveData<ScriptureResponse>()
     val responseData: LiveData<ScriptureResponse> = scriptureData
 
-    fun getScripture(month: String, day: String): String{
+    fun getScripture(dayOfYear: Int): String{
         viewModelScope.launch {
+            val cal = Calendar.getInstance().apply {
+                set(Calendar.DAY_OF_YEAR, dayOfYear)
+            }
+            val month = (cal.get(Calendar.MONTH) + 1).toString()
+            println(month)
+            val day = cal.get(Calendar.DAY_OF_MONTH).toString()
             scriptureData.value = repo.getScripture(month, day)
         }
-        return displayDate(month.toInt() - 1, day.toInt())
+        return displayDate(dayOfYear)
     }
 
-    private fun displayDate(month: Int, day: Int): String {
+    private fun displayDate(dayOfYear: Int): String {
         val local = Locale.getDefault()
         val format = SimpleDateFormat("MMMM d", local)
         val date = Calendar.getInstance()
-        date.set(Calendar.MONTH, month)
-        date.set(Calendar.DAY_OF_MONTH, day)
+        date.set(Calendar.DAY_OF_YEAR, dayOfYear)
         return format.format(date.time)
     }
 

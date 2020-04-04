@@ -9,7 +9,7 @@
         <OnSwipe
             motion:onTouchUp="stop"
             motion:dragDirection="dragUp"
-            motion:touchAnchorId="@+id/toolbar"
+            motion:touchAnchorId="@+id/title"
             />
 
     </Transition>
