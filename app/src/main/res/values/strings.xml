@@ -2,4 +2,6 @@
     <string name="app_name">bom_365</string>
     <string name="calendar">Calendar</string>
     <string name="open_in_gospel_library">Open in Gospel Library</string>
+    <string name="snack_bar_text">Network error please refresh</string>
+    <string name="refresh">Refresh</string>
 </resources>
