@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tylerb.myapplication.adapter.ScriptureRecycler
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import kotlin.collections.ArrayList
 
 class MainFragment : Fragment() {
@@ -19,12 +19,11 @@ class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.activity_main, container, false)
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val page = arguments?.getInt("key")
-        println(page)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         val verseList = ArrayList<String>()

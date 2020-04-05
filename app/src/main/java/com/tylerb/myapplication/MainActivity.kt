@@ -15,6 +15,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.tylerb.myapplication.adapter.ScriptureRecycler
 import com.tylerb.myapplication.adapter.ViewPagerFragmentState
+import com.tylerb.myapplication.util.gospelLibraryUrl
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import java.util.*
@@ -22,11 +23,9 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var viewModel: MainViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_main)
+        setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         val pagerAdapter = ViewPagerFragmentState(this)
@@ -35,8 +34,6 @@ class MainActivity : AppCompatActivity() {
         val dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
         // have to minus one because DAY_OF_YEAR starts dec 31
         view_pager.setCurrentItem(dayOfYear - 1, false)
-
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -64,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
             }
             R.id.library -> {
-                val url = viewModel.gospelLibraryUrl(tv_ref_main.text.toString())
+                val url = gospelLibraryUrl(tv_ref_main.text.toString())
                 startActivity(Intent(Intent.ACTION_VIEW, url))
                 true
             }
