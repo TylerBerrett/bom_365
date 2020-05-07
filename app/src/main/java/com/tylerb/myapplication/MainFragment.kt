@@ -39,7 +39,6 @@ class MainFragment : Fragment() {
 
 
         viewModel.responseData.observe(this, Observer { response ->
-            println(response)
             verseList.clear()
             pb_main.visibility = View.GONE
             tv_ref_main.text = response.main_title
