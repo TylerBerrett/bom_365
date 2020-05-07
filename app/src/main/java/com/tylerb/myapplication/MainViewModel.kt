@@ -18,6 +18,12 @@ class MainViewModel: ViewModel() {
     private val error = MutableLiveData<String>()
     val responseError: LiveData<String> = error
 
+    private val lang = when (Locale.getDefault().language) {
+        "es" -> "spa"
+        "pt" -> "por"
+        else -> "eng"
+    }
+
     fun getScripture(dayOfYear: Int): String{
         viewModelScope.launch {
             val cal = Calendar.getInstance().apply {
@@ -26,7 +32,7 @@ class MainViewModel: ViewModel() {
             val month = (cal.get(Calendar.MONTH) + 1).toString()
             val day = cal.get(Calendar.DAY_OF_MONTH).toString()
             try {
-                scriptureData.value = repo.getScripture(month, day)
+                scriptureData.value = repo.getScripture(month, day, lang)
             } catch (e: Exception) {
                 error.value = e.toString()
             }

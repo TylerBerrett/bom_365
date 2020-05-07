@@ -4,7 +4,7 @@ import com.tylerb.myapplication.model.ScriptureResponse
 import com.tylerb.myapplication.network.CallBuilder.getScripture
 
 class Repo {
-    suspend fun getScripture(month: String, day: String): ScriptureResponse {
-        return getScripture().getBook(month, day)
+    suspend fun getScripture(month: String, day: String, lang: String): ScriptureResponse {
+        return getScripture().getBook(month, day, lang)
     }
 }
