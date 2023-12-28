@@ -11,16 +11,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.tylerb.myapplication.adapter.ScriptureRecycler
-import kotlinx.android.synthetic.main.fragment_main.*
+import com.tylerb.myapplication.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var displayDate: String
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,8 +33,8 @@ class MainFragment : Fragment() {
 
         val verseList = ArrayList<String>()
 
-        rv_main.layoutManager = LinearLayoutManager(context)
-        rv_main.adapter = ScriptureRecycler(verseList)
+        binding.rvMain.layoutManager = LinearLayoutManager(context)
+        binding.rvMain.adapter = ScriptureRecycler(verseList)
 
 
         page?.let {dayOfYear ->
@@ -40,21 +44,21 @@ class MainFragment : Fragment() {
 
         viewModel.responseData.observe(this, Observer { response ->
             verseList.clear()
-            pb_main.visibility = View.GONE
-            tv_ref_main.text = response.main_title
-            tv_date_main.text = displayDate
+            binding.pbMain.visibility = View.GONE
+            binding.tvRefMain.text = response.main_title
+            binding.tvDateMain.text = displayDate
             response.scriptures.forEach {
                 verseList.add(it)
             }
-            rv_main.adapter?.notifyDataSetChanged()
+            binding.rvMain.adapter?.notifyDataSetChanged()
 
         })
 
-        viewModel.responseError.observe(this, Observer {
-            pb_main.visibility = View.GONE
-            val snack = Snackbar.make(snackbar, R.string.snack_bar_text, Snackbar.LENGTH_INDEFINITE)
+        viewModel.responseError.observe(viewLifecycleOwner, Observer {
+            binding.pbMain.visibility = View.GONE
+            val snack = Snackbar.make(binding.snackbar, R.string.snack_bar_text, Snackbar.LENGTH_INDEFINITE)
             snack.setAction(R.string.refresh) {
-                pb_main.visibility = View.VISIBLE
+                binding.pbMain.visibility = View.VISIBLE
                 page?.let {
                     displayDate = viewModel.getScripture(it)
                 }
@@ -68,5 +72,10 @@ class MainFragment : Fragment() {
 
         })
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

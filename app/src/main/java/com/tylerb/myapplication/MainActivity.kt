@@ -4,28 +4,31 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.tylerb.myapplication.adapter.ViewPagerFragmentState
+import com.tylerb.myapplication.databinding.ActivityMainBinding
 import com.tylerb.myapplication.util.gospelLibraryUrl
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         title = "Daily Book Of Mormon"
 
         val pagerAdapter = ViewPagerFragmentState(this)
-        view_pager.adapter = pagerAdapter
+        binding.viewPager.adapter = pagerAdapter
 
         val dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
         // have to minus one because DAY_OF_YEAR starts dec 31
-        view_pager.setCurrentItem(dayOfYear - 1, false)
+        binding.viewPager.setCurrentItem(dayOfYear - 1, false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -47,13 +50,14 @@ class MainActivity : AppCompatActivity() {
                     calendar.time = Date(it)
                     val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
                     // have to minus one because DAY_OF_YEAR starts dec 31
-                    view_pager.setCurrentItem(dayOfYear - 1, false)
+                    binding.viewPager.setCurrentItem(dayOfYear - 1, false)
                 }
                 true
 
             }
             R.id.library -> {
-                val url = gospelLibraryUrl(tv_ref_main.text.toString())
+                val mainTitle = findViewById<TextView>(R.id.tv_ref_main).text.toString()
+                val url = gospelLibraryUrl(mainTitle)
                 startActivity(Intent(Intent.ACTION_VIEW, url))
                 true
             }
