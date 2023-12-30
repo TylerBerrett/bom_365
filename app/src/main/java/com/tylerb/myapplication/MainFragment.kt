@@ -42,10 +42,10 @@ class MainFragment : Fragment() {
         }
 
 
-        viewModel.responseData.observe(this, Observer { response ->
+        viewModel.responseData.observe(viewLifecycleOwner, Observer { response ->
             verseList.clear()
             binding.pbMain.visibility = View.GONE
-            binding.tvRefMain.text = response.main_title
+            binding.tvRefMain.text = response.mainTitle
             binding.tvDateMain.text = displayDate
             response.scriptures.forEach {
                 verseList.add(it)
