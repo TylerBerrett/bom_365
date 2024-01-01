@@ -1,6 +1,7 @@
 package com.tylerb.myapplication.util
 
 import android.net.Uri
+import androidx.compose.runtime.Stable
 import java.util.*
 
 fun gospelLibraryUrl(mainTitle: String): Uri {
@@ -22,4 +23,19 @@ fun gospelLibraryUrl(mainTitle: String): Uri {
     }
     val url = "https://www.churchofjesuschrist.org/study/scriptures/bofm/$finalBook/$chapter"
     return Uri.parse(url)
+}
+
+@Stable
+sealed class DataResult<out R> {
+    data object Loading : DataResult<Nothing>()
+    data class Success<out T>(val data: T) : DataResult<T>()
+    data class Error(val error: Throwable) : DataResult<Nothing>()
+}
+
+inline fun <T> dataRunCatching(block: () -> T): DataResult<T> {
+    return try {
+        DataResult.Success(block())
+    } catch (e: Exception) {
+        DataResult.Error(e)
+    }
 }

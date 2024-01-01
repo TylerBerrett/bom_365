@@ -27,52 +27,52 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val page = arguments?.getInt("key")
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
-        val verseList = ArrayList<String>()
-
-        binding.rvMain.layoutManager = LinearLayoutManager(context)
-        binding.rvMain.adapter = ScriptureRecycler(verseList)
-
-
-        page?.let {dayOfYear ->
-            displayDate = viewModel.getScripture(dayOfYear)
-        }
-
-
-        viewModel.responseData.observe(viewLifecycleOwner, Observer { response ->
-            verseList.clear()
-            binding.pbMain.visibility = View.GONE
-            binding.tvRefMain.text = response.mainTitle
-            binding.tvDateMain.text = displayDate
-            response.scriptures.forEach {
-                verseList.add(it)
-            }
-            binding.rvMain.adapter?.notifyDataSetChanged()
-
-        })
-
-        viewModel.responseError.observe(viewLifecycleOwner, Observer {
-            binding.pbMain.visibility = View.GONE
-            val snack = Snackbar.make(binding.snackbar, R.string.snack_bar_text, Snackbar.LENGTH_INDEFINITE)
-            snack.setAction(R.string.refresh) {
-                binding.pbMain.visibility = View.VISIBLE
-                page?.let {
-                    displayDate = viewModel.getScripture(it)
-                }
-            }
-            context?.let {
-                snack.setActionTextColor(ContextCompat.getColor(it, R.color.colorAccent))
-                snack.setTextColor(ContextCompat.getColor(it, R.color.design_default_color_surface))
-                snack.setBackgroundTint(ContextCompat.getColor(it, R.color.colorPrimary))
-            }
-            snack.show()
-
-        })
-
-    }
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        val page = arguments?.getInt("key")
+//        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+//
+//        val verseList = ArrayList<String>()
+//
+//        binding.rvMain.layoutManager = LinearLayoutManager(context)
+//        binding.rvMain.adapter = ScriptureRecycler(verseList)
+//
+//
+//        page?.let {dayOfYear ->
+//            displayDate = viewModel.getScripture(dayOfYear)
+//        }
+//
+//
+//        viewModel.responseData.observe(viewLifecycleOwner, Observer { response ->
+//            verseList.clear()
+//            binding.pbMain.visibility = View.GONE
+//            binding.tvRefMain.text = response.mainTitle
+//            binding.tvDateMain.text = displayDate
+//            response.scriptures.forEach {
+//                verseList.add(it)
+//            }
+//            binding.rvMain.adapter?.notifyDataSetChanged()
+//
+//        })
+//
+//        viewModel.responseError.observe(viewLifecycleOwner, Observer {
+//            binding.pbMain.visibility = View.GONE
+//            val snack = Snackbar.make(binding.snackbar, R.string.snack_bar_text, Snackbar.LENGTH_INDEFINITE)
+//            snack.setAction(R.string.refresh) {
+//                binding.pbMain.visibility = View.VISIBLE
+//                page?.let {
+//                    displayDate = viewModel.getScripture(it)
+//                }
+//            }
+//            context?.let {
+//                snack.setActionTextColor(ContextCompat.getColor(it, R.color.colorAccent))
+//                snack.setTextColor(ContextCompat.getColor(it, R.color.design_default_color_surface))
+//                snack.setBackgroundTint(ContextCompat.getColor(it, R.color.colorPrimary))
+//            }
+//            snack.show()
+//
+//        })
+//
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

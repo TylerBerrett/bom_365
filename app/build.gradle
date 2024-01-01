@@ -24,7 +24,13 @@ android {
 
     buildFeatures {
         viewBinding true
+        compose true
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.7"
+    }
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -41,6 +47,17 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0-alpha13'
 
+    // Compose
+    def composeBom = platform('androidx.compose:compose-bom:2023.10.01')
+    implementation composeBom
+    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.activity:activity-compose:1.8.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2'
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.2"
+
+    // Immutable Collections
+    implementation "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6"
+
     // OkHttp
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
 
@@ -49,8 +66,6 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     ksp "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
-
-
 
     // Jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
