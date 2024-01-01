@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'com.google.devtools.ksp'
 
+apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
+
 android {
     compileSdk 34
     defaultConfig {
@@ -50,7 +52,8 @@ dependencies {
     ksp "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
-
+    // Kotlin Serialization
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0'
 
     // Jsoup
     implementation 'org.jsoup:jsoup:1.13.1'

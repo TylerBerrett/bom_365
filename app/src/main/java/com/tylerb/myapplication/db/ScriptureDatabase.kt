@@ -29,7 +29,7 @@ abstract class ScriptureDatabase : RoomDatabase() {
                         ScriptureDatabase::class.java,
                         DATABASE_NAME
                     )
-                        .createFromAsset(DATABASE_NAME)
+//                        .createFromAsset(DATABASE_NAME)
                         .addTypeConverter(ListDbConverter())
                         .build()
                 }

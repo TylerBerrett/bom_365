@@ -9,7 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.tylerb.myapplication.adapter.ViewPagerFragmentState
 import com.tylerb.myapplication.databinding.ActivityMainBinding
+import com.tylerb.myapplication.model.DbScripture
+import com.tylerb.myapplication.model.RawDbScripture
 import com.tylerb.myapplication.util.gospelLibraryUrl
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -23,12 +29,20 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         title = "Daily Book Of Mormon"
 
-        val pagerAdapter = ViewPagerFragmentState(this)
-        binding.viewPager.adapter = pagerAdapter
+        MainScope().launch {
+            val rawFile = resources.openRawResource(R.raw.scriptures)
+            val bruh = Json.decodeFromStream<List<RawDbScripture>>(rawFile).map { it.toDB() }.toTypedArray()
+            ScriptureApp.db.scriptureDao().insertAll(*bruh)
+        }
 
-        val dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
-        // have to minus one because DAY_OF_YEAR starts dec 31
-        binding.viewPager.setCurrentItem(dayOfYear - 1, false)
+
+
+//        val pagerAdapter = ViewPagerFragmentState(this)
+//        binding.viewPager.adapter = pagerAdapter
+//
+//        val dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+//        // have to minus one because DAY_OF_YEAR starts dec 31
+//        binding.viewPager.setCurrentItem(dayOfYear - 1, false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
